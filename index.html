@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clinician Shift Sign-Up · Nov 2026 – Feb 2027</title>
+  <meta name="description" content="Weekday shift sign-up calendar for clinicians. Sign up for the 11:00 AM – 9:00 PM shift and adjust your times if you arrive or leave early." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2357a7ad'/%3E%3Cpath d='M11 20.5V11h5.2c2.2 0 3.6 1.1 3.6 2.9 0 1.2-.7 2.1-1.8 2.5l2 4.1h-2.5l-1.7-3.7h-2.4v3.7zm2.4-5.5h2.5c.9 0 1.5-.5 1.5-1.2s-.6-1.1-1.5-1.1h-2.5z' fill='%230f161a'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#calendar">Skip to calendar</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <h1>Clinician Shift Sign-Up</h1>
+        <p class="subtitle">Weekdays · 11:00 AM – 9:00 PM · November 2026 – February 2027</p>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="btn btn-ghost" id="export-btn" aria-label="Download a backup of the schedule">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Backup
+        </button>
+        <button type="button" class="btn btn-icon" id="theme-toggle" aria-label="Switch to light mode"></button>
+      </div>
+    </div>
+    <nav class="month-tabs" id="month-tabs" aria-label="Choose month"></nav>
+  </header>
+
+  <div class="notice" id="notice" hidden></div>
+
+  <main id="calendar" class="calendar-wrap" aria-live="polite"></main>
+
+  <footer class="site-footer">
+    <p id="sync-status">Loading schedule…</p>
+    <p class="footer-note">Pick any weekday to claim the shift. If you arrive or leave early, adjust your start and end times when you sign up — or edit later.</p>
+  </footer>
+
+  <dialog id="signup-dialog" aria-labelledby="dialog-title">
+    <form method="dialog" id="signup-form" novalidate>
+      <h2 id="dialog-title">Sign up</h2>
+      <p class="dialog-date" id="dialog-date"></p>
+
+      <div class="field">
+        <label for="f-name">Your name</label>
+        <input type="text" id="f-name" name="name" maxlength="60" autocomplete="off" placeholder="e.g. Jordan Reyes, PA" required />
+        <p class="field-error" id="name-error" hidden>Please enter your name.</p>
+      </div>
+
+      <fieldset class="time-fields">
+        <legend>Shift times <span class="legend-hint">(adjust if you arrive or leave early)</span></legend>
+        <div class="field">
+          <label for="f-start">Start</label>
+          <input type="time" id="f-start" name="start" step="300" value="11:00" />
+        </div>
+        <div class="field">
+          <label for="f-end">End</label>
+          <input type="time" id="f-end" name="end" step="300" value="21:00" />
+          <p class="field-error" id="time-error" hidden>End time must be after start time.</p>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="f-note">Note <span class="legend-hint">(optional)</span></label>
+        <input type="text" id="f-note" name="note" maxlength="80" placeholder="e.g. leaving at 7 for a school event" />
+      </div>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-danger-ghost" id="remove-btn" hidden>Remove my sign-up</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-ghost" id="cancel-btn">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="save-btn">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
