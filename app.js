@@ -161,8 +161,9 @@ function b64decodeUtf8(b64) {
 
 async function ghGetFile() {
   const res = await fetch(
-    `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.dataRepo}/contents/${CONFIG.file}?ref=${CONFIG.branch}`,
+    `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.dataRepo}/contents/${CONFIG.file}?ref=${CONFIG.branch}&cb=${Date.now()}`,
     {
+      cache: 'no-store',
       headers: {
         Authorization: `Bearer ${token()}`,
         Accept: 'application/vnd.github+json',
