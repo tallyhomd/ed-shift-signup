@@ -13,7 +13,7 @@ const CONFIG = {
   file: 'data.json',
   // Access token (reversed + base64) is added once the site is
   // connected. Empty = preview mode: full UI, nothing saved.
-  tokenEnc: '',
+  tokenEnc: 'OERONVByU05PTEFUUDQ0NzFIbjRpdlFsdzRGR2JWQ0FQZktlTzZwbEM3bDEwTFh4ZmgxRHFNVmNablBfbU5GVVFuOGdtekRkMEk3NzJKNEIxMV90YXBfYnVodGln',
   months: [
     { y: 2026, m: 10 },
     { y: 2026, m: 11 },
