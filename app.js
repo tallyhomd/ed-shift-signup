@@ -7,7 +7,8 @@
 
 const CONFIG = {
   owner: 'tallyhomd',
-  repo: 'ed-shift-signup',
+  repo: 'ed-shift-signup', // public site code
+  dataRepo: 'ed-shift-signup-data', // private schedule data
   branch: 'main',
   file: 'data.json',
   // Access token (reversed + base64) is added once the site is
@@ -114,24 +115,19 @@ async function loadData() {
         state.data = JSON.parse(cached);
         return;
       } catch {
-        /* fall through to fetch */
+        /* fall through */
       }
     }
+    state.data = seedData();
+    return;
   }
-  const url = `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/${CONFIG.branch}/${CONFIG.file}?cb=${Date.now()}`;
   try {
-    const res = await fetch(url, { cache: 'no-store' });
-    if (res.status === 404) {
-      state.data = seedData();
-      state.loadError = false;
-      return;
-    }
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    state.data = json && typeof json === 'object' && json.signups ? json : seedData();
+    const { data } = await ghGetFile();
+    state.data = data && typeof data === 'object' && data.signups ? data : seedData();
     state.lastSync = new Date();
     state.loadError = false;
-  } catch {
+    cacheLocally();
+  } catch (err) {
     const cached = safeGet('shift-cache');
     if (cached) {
       try {
@@ -165,7 +161,7 @@ function b64decodeUtf8(b64) {
 
 async function ghGetFile() {
   const res = await fetch(
-    `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.file}?ref=${CONFIG.branch}`,
+    `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.dataRepo}/contents/${CONFIG.file}?ref=${CONFIG.branch}`,
     {
       headers: {
         Authorization: `Bearer ${token()}`,
@@ -180,7 +176,7 @@ async function ghGetFile() {
 
 async function ghPutFile(data, sha) {
   const res = await fetch(
-    `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.file}`,
+    `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.dataRepo}/contents/${CONFIG.file}`,
     {
       method: 'PUT',
       headers: {
