@@ -11,3 +11,7 @@ Weekday shift sign-up calendar for clinicians, November 2026 – February 2027.
 1. The page loads `data.json` from the private data repository (via the GitHub API).
 2. When someone signs up, edits a time, or removes a sign-up, the page commits the updated `data.json` back to the private data repository and refreshes.
 3. If two people save at the same moment, the site automatically retries with the latest version so no sign-up is lost.
+
+## Editing note
+
+`index.html` references `styles.css?v=N` and `app.js?v=N`. After editing either file, bump `N` so returning visitors' browsers pick up the change immediately instead of waiting out GitHub Pages' ~10-minute cache.
